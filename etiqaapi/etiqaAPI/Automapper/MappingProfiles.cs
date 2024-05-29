@@ -12,6 +12,8 @@ namespace etiqaAPI.Automapper
         {
             CreateMap<CreateUserDto, User>();
             CreateMap<SignInDto, User>();
+            CreateMap<User, GetUserDto>();
+            CreateMap<GetUserDto, User>();
 
         }
 

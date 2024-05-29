@@ -41,6 +41,7 @@ namespace etiqaAPI.Controllers
         {
 
             var user = await _userRepository.GetUsersAsync();
+            var userDto = _mapper.Map<List<GetUserDto>>(user);
             return Ok(user);
         
         }
