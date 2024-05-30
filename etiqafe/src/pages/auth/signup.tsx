@@ -12,6 +12,9 @@ import { AppDispatch } from '@/redux/store';
 type RegisterFormsInputs = {
   email: string;
   username: string;
+  phoneNumber : string;
+  hobby : string;
+  skillSets : string;
   password: string;
   confirmpassword: string;
 }; 
@@ -19,6 +22,9 @@ type RegisterFormsInputs = {
 const validation = Yup.object().shape({
   email: Yup.string().required("Email is required"),
   username: Yup.string().required("Username is required"),
+  phoneNumber: Yup.string().required("Phone Number is required"),
+  hobby: Yup.string().required("Hobby is required"),
+  skillSets: Yup.string().required("Skill Set is required"),
   password: Yup.string().required("Password is required"),
   confirmpassword : Yup.string().required("Confirm Password is required")
 });
@@ -32,7 +38,7 @@ const Signup = () => {
   } = useForm<RegisterFormsInputs>({ resolver: yupResolver(validation) });
 
   const handlesignup = (form: RegisterFormsInputs) => {
-    registerAPI(form.email, form.username, form.password, form.confirmpassword,dispatch);
+    registerAPI(form.email, form.username, form.phoneNumber, form.hobby, form.skillSets ,form.password, form.confirmpassword ,dispatch);
   };
 
   return (
@@ -43,23 +49,35 @@ const Signup = () => {
       </div>
       <form onSubmit={handleSubmit(handlesignup)}>
         <div className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
+       
             <div className="space-y-2">
-              <Label htmlFor="first-name">User Name</Label>
-              <Input id="first-name" placeholder="Lee" required {...register("username")} />
+              <Label htmlFor="user-name">User Name</Label>
+              <Input id="user-name" placeholder="Lee"  {...register("username")} />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="last-name">Email</Label>
-              <Input id="last-name" placeholder="Robinson" required {...register("email")} />
+              <Label htmlFor="email">Email</Label>
+              <Input id="email" placeholder="example@gmail.com"  {...register("email")} />
             </div>
+            <div className="space-y-2">
+              <Label htmlFor="phone-number">Phone Number</Label>
+              <Input id="phone-number" placeholder="019234567"  {...register("phoneNumber")} />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="hobby">Hobby</Label>
+              <Input id="hobby" placeholder="Running"  {...register("hobby")} />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="skill-sets">SkillSet</Label>
+              <Input id="skill-sets" placeholder=".Net Core"  {...register("skillSets")} />
+            </div>
+        
+          <div className="space-y-2">
+            <Label htmlFor="password">Password</Label>
+            <Input id="password" placeholder="password"  type="password" {...register("password")} />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="email">Password</Label>
-            <Input id="email" placeholder="m@example.com" required type="password" {...register("password")} />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="password">Confirm Password</Label>
-            <Input id="password" required type="confirmpassword" {...register("confirmpassword")} />
+            <Label htmlFor="confirm-password">Confirm Password</Label>
+            <Input id="confirm-password" placeholder='confirm password' type="password"  {...register("confirmpassword")} />
           </div>
           <Button className="w-full" type="submit">
             Sign Up

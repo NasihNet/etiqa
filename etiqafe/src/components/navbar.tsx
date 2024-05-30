@@ -29,8 +29,8 @@ function Navbar() {
             
             {/* Cart Icon */}
             <div className="flex items-center gap-3 shrink-0 ml-auto">
-              <ShoppingCart className="text-gray-600 hover:text-gray-800 w-6 h-6" />
-              <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">{counter}</Badge>
+              {/* <ShoppingCart className="text-gray-600 hover:text-gray-800 w-6 h-6" />
+              <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">{counter}</Badge> */}
             </div>
           </nav>
         </div>

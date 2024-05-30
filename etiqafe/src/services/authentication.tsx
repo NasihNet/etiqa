@@ -9,16 +9,22 @@ const api = "https://localhost:7254/api/";
 export const registerAPI = async (
     email: string,
     username: string,
+    phoneNumber : string,
+    hobby : string,
+    skillSets : string,
     passwordhash: string,
     confirmpasswordhash: string,
     dispatch: AppDispatch // Correct function signature
 ) => {
     try {
         const { data } = await axios.post<UserProfileToken>(api + "authentication/signup/", {
-            email: email,
-            username: username,
-            passwordhash: passwordhash,
-            confirmpasswordhash: confirmpasswordhash
+            Email: email,
+            Username: username,
+            PhoneNumber : phoneNumber,     
+            Hobby :hobby,
+            SkillSets : skillSets,    
+            PasswordHash: passwordhash,
+            ConfirmPasswordhash: confirmpasswordhash
         });
         dispatch(userAuthenticated(data));
 
