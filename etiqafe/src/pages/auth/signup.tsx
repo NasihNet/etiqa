@@ -57,6 +57,11 @@ const Signup = () => {
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input id="email" placeholder="example@gmail.com"  {...register("email")} />
+              {errors.email ? (
+                  <p className="text-rose-600">{errors.email.message}</p>
+                ) : (
+                  ""
+                )}
             </div>
             <div className="space-y-2">
               <Label htmlFor="phone-number">Phone Number</Label>

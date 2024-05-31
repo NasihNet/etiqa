@@ -6,10 +6,10 @@ import { ReduxProvider } from "@/redux/provider";
 
 const Layout: React.FC<any> = ({ children }) => {
     return (
-      <div className="content">
-        <Toaster/>
+      <div className="content">        
          <Navbar />
          <ReduxProvider>
+         <Toaster/>
            { children }
          </ReduxProvider>
        

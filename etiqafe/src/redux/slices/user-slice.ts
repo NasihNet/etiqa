@@ -23,17 +23,17 @@ export const userSlice = createSlice({
     initialState,
     reducers: {
         setUsers: (state, action) => {
-            //sessionStorage.setItem('token', action.payload.token);    
-                   
+            //sessionStorage.setItem('token', action.payload.token);                    
             state.Users = action.payload;
             
         },
         editUser: (state, action) => {
               state.Users = action.payload;
         },
-        deleteUser: (state, action) => {
-             state.Users = action.payload;
-        },
+        deleteUser: (state, action: PayloadAction<number>) => {
+            debugger;
+            state.Users = state.Users.filter(user => user.id !== action.payload);
+        }
     }
 });
 

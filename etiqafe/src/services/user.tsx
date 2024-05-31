@@ -11,7 +11,7 @@ export const getUsers = async (
 ) => {
     try {
         const { data } = await axios.get<User>(api + "/api/User", {});      
-        debugger;
+        debugger
         dispatch(setUsers(data));    
         return data;
 
@@ -29,7 +29,7 @@ export const deleteUserApi = async (
         //const { data } = await axios.delete<User>(api + '/api/User?userId=${userId}', {});    
         const data = await axios.delete<User>(api + `/api/User?userId=${userId}`,{});  
         debugger;
-        dispatch(deleteUser(data));    
+        dispatch(deleteUser(userId));    
         return data;
 
     } catch (error) {

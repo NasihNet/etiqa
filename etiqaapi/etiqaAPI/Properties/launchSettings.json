@@ -1,4 +1,4 @@
-﻿{
+{
   "$schema": "https://json.schemastore.org/launchsettings.json",
   "iisSettings": {
     "windowsAuthentication": false,
@@ -11,7 +11,6 @@
   "profiles": {
     "http": {
       "commandName": "Project",
-      "dotnetRunMessages": true,
       "launchBrowser": true,
       "launchUrl": "swagger",
       "applicationUrl": "http://localhost:5100",
@@ -19,11 +18,11 @@
         "ASPNETCORE_ENVIRONMENT": "Development",
         "JWT_SECRET": "Wm+GxaLh2Gt8PyxiNaqQG/OTwpVROmT2pjtZcKdMbqE=",
         "JWT_ISSUER": "My Expenses"
-      }
+      },
+      "dotnetRunMessages": true
     },
     "https": {
       "commandName": "Project",
-      "dotnetRunMessages": true,
       "launchBrowser": true,
       "launchUrl": "swagger",
       "applicationUrl": "https://localhost:7254;http://localhost:5100",
@@ -31,8 +30,8 @@
         "ASPNETCORE_ENVIRONMENT": "Development",
         "JWT_SECRET": "Wm+GxaLh2Gt8PyxiNaqQG/OTwpVROmT2pjtZcKdMbqE=",
         "JWT_ISSUER": "My Expenses"
-
-      }
+      },
+      "dotnetRunMessages": true
     },
     "IIS Express": {
       "commandName": "IISExpress",
