@@ -9,7 +9,7 @@ const Layout: React.FC<any> = ({ children }) => {
       <div className="content">        
          <Navbar />
          <ReduxProvider>
-         <Toaster/>
+         <Toaster position="top-right"/>
            { children }
          </ReduxProvider>
        

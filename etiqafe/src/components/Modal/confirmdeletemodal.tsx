@@ -25,9 +25,6 @@ interface DeleteUserFormProps {
   return (
     <div>
       <AlertDialog defaultOpen>
-      <AlertDialogTrigger asChild>
-        <Button variant="destructive">Delete User</Button>
-      </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Are you sure you want to delete this {user.userName}?</AlertDialogTitle>

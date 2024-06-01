@@ -12,6 +12,9 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { editUserApi } from '@/services/user';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '@/redux/store';
 
 interface EditUserFormProps {
   user: User;
@@ -24,11 +27,19 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ user, onClose }) => {
   const [phoneNumber, setPhoneNumber] = useState(user.phoneNumber);
   const [hobby, setHobby] = useState(user.hobby);
   const [skillSets, setSkillSets] = useState(user.skillSets);
+  const dispatch = useDispatch<AppDispatch>();
 
   const handleSave = () => {
     // Here you can handle the save logic, e.g., dispatching a Redux action to update the user
-
-    console.log({ userName, email, phoneNumber });
+    const updatedUser: User = {
+      ...user,
+      userName,
+      email,
+      phoneNumber,
+      hobby,
+      skillSets
+    };
+    editUserApi(updatedUser,dispatch)
     onClose();
   };
 

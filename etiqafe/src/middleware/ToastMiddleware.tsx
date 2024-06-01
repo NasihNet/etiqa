@@ -4,11 +4,15 @@ import { Middleware } from '@reduxjs/toolkit';
 import { AnyAction } from 'redux';
 
 const toastMiddleware: Middleware = () => next => (action: AnyAction) => {
+  debugger
   switch (action.type) {
     case deleteUser.type:
       toast.success('User deleted successfully!');
       break;
     // Add other cases here as needed
+    case "Users/editUser":
+      toast.success('User updated!');
+      break;   
     default:
       break;
   }

@@ -11,7 +11,7 @@ export const store = configureStore({
      authReducer,
      user : userReducer,
 },
-//middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(ToastMiddleware)
+middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(ToastMiddleware)
 });
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

@@ -39,34 +39,21 @@ namespace etiqaAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetUsersAsync()
         {
-            List<GetUserDto> UserListDto = new List<GetUserDto>();
-            var userdtoin = new GetUserDto()
-            {
-                Id = 15,
-                UserName = "aria93",
-                Email = "aria@gmail.com",
-                PhoneNumber = "0194421514",
-                Hobby = "eating",
-                SkillSets = ".net core",
-
-            };
-            UserListDto.Add(userdtoin);
-
-            return Ok(UserListDto);
-           // var user = await _userRepository.GetUsersAsync();
-          //  var userDto = _mapper.Map<List<GetUserDto>>(user);
-           // return Ok(userdtoin);
+       
+           var user = await _userRepository.GetUsersAsync();
+           var userDto = _mapper.Map<List<GetUserDto>>(user);
+           return Ok(userDto);
         
         }
 
         [HttpPut]
-        public async Task<IActionResult> EditUserAsync(User user)
+        public async Task<IActionResult> EditUserAsync(EditUserDto userDto)
         {
 
-            //var user = _mapper.Map<User>(userdto);
-            var result =  _userRepository.EditUserAsync(user);
+            var user = _mapper.Map<User>(userDto);
+            var result =  await _userRepository.EditUserAsync(user);
 
-            return Ok(result);
+            return Ok(userDto);
            
        
         }
@@ -76,7 +63,7 @@ namespace etiqaAPI.Controllers
         {
 
             //  var user = _mapper.Map<User>(userdto);
-            var result = _userRepository.DeleteUserAsync(userId);
+            var result =  _userRepository.DeleteUserAsync(userId);
 
             return Ok();
         }

@@ -31,10 +31,33 @@ namespace etiqa.Dal.Repositories
 
         public async Task<User> EditUserAsync(User user)
         {
-            _appDbContext.Users.Update(user);
-            await _appDbContext.SaveChangesAsync();
+            try
+            {
+                var result =  _appDbContext.Users.Include(x => x.UserRoles).Where(x => x.Id == user.Id).FirstOrDefault();
 
-            return user;
+                if (result == null)
+                {
+                    throw new Exception("User not found");
+                }
+
+                result.Email = user.Email;
+                result.UserName = user.UserName;
+                result.PhoneNumber = user.PhoneNumber;
+                result.Hobby = user.Hobby;
+                result.SkillSets = user.SkillSets;
+
+                _appDbContext.Users.Update(result);
+                await _appDbContext.SaveChangesAsync();
+
+                return user;
+            }
+            catch (Exception e)
+            {
+                // Log the exception details
+                Console.WriteLine($"Error in EditUserAsync: {e.Message}");
+                Console.WriteLine(e.StackTrace);
+                throw; // Rethrow the exception to be handled by the calling method
+            }
         }
 
         public async Task<User> GetUserAsync(int id)

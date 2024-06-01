@@ -27,11 +27,18 @@ export const userSlice = createSlice({
             state.Users = action.payload;
             
         },
-        editUser: (state, action) => {
-              state.Users = action.payload;
+        editUser: (state, action: PayloadAction<User>) => {
+            const updatedUser = action.payload;
+            const users = state.Users.map(user => {
+                if (user.id === updatedUser.id) {
+                    return updatedUser;
+                }
+                return user;
+            });
+            return { ...state, Users: [...users] };
         },
         deleteUser: (state, action: PayloadAction<number>) => {
-            debugger;
+            debugger
             state.Users = state.Users.filter(user => user.id !== action.payload);
         }
     }

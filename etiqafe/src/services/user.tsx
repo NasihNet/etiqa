@@ -2,7 +2,7 @@ import React from 'react'
 import { User } from "../Model/User";
 import axios from "axios";
 import { AppDispatch } from '@/redux/store'; // Ensure this import is correct
-import { setUsers, deleteUser } from '@/redux/slices/user-slice';
+import { setUsers, deleteUser, editUser } from '@/redux/slices/user-slice';
 
 const api = "https://localhost:7254";
 
@@ -11,7 +11,6 @@ export const getUsers = async (
 ) => {
     try {
         const { data } = await axios.get<User>(api + "/api/User", {});      
-        debugger
         dispatch(setUsers(data));    
         return data;
 
@@ -28,7 +27,6 @@ export const deleteUserApi = async (
     try {
         //const { data } = await axios.delete<User>(api + '/api/User?userId=${userId}', {});    
         const data = await axios.delete<User>(api + `/api/User?userId=${userId}`,{});  
-        debugger;
         dispatch(deleteUser(userId));    
         return data;
 
@@ -37,3 +35,19 @@ export const deleteUserApi = async (
         console.error(error);
     }
 };
+
+
+export const editUserApi = async (
+    user : User,
+    dispatch : AppDispatch
+) => {
+   
+    try{
+        const {data} = await axios.put<User>(api + '/api/User', user)
+        debugger;
+        dispatch(editUser(data));
+    }catch(error)
+    {
+
+    }
+}
