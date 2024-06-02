@@ -1,16 +1,26 @@
 import React from 'react'
 import { User } from "../Model/User";
-import axios from "axios";
+import axios, { InternalAxiosRequestConfig } from "axios";
 import { AppDispatch } from '@/redux/store'; // Ensure this import is correct
 import { setUsers, deleteUser, editUser } from '@/redux/slices/user-slice';
 
 const api = "https://localhost:7254";
 
+const axiosInstance = axios.create({    
+    baseURL: `https://localhost:7254/api/User`,
+})
+
+axiosInstance.interceptors.request.use((config : InternalAxiosRequestConfig) => {
+    config.headers['Authorization'] = 'Bearer ' + sessionStorage.getItem('token');
+    return config;
+});
+
+
 export const getUsers = async (
     dispatch: AppDispatch // Correct function signature
 ) => {
     try {
-        const { data } = await axios.get<User>(api + "/api/User", {});      
+        const { data } = await axiosInstance.get<User[]>("");     
         dispatch(setUsers(data));    
         return data;
 
@@ -26,7 +36,8 @@ export const deleteUserApi = async (
 ) => {
     try {
         //const { data } = await axios.delete<User>(api + '/api/User?userId=${userId}', {});    
-        const data = await axios.delete<User>(api + `/api/User?userId=${userId}`,{});  
+        const { data } = await axiosInstance.delete<User>(`?userId=${userId}`);
+        debugger
         dispatch(deleteUser(userId));    
         return data;
 
@@ -43,8 +54,8 @@ export const editUserApi = async (
 ) => {
    
     try{
-        const {data} = await axios.put<User>(api + '/api/User', user)
-        debugger;
+        const { data } = await axiosInstance.put<User>("", user);
+
         dispatch(editUser(data));
     }catch(error)
     {

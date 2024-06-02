@@ -64,7 +64,12 @@ namespace etiqa.Dal.Repositories
         {
            var user = await _appDbContext.Users.FirstOrDefaultAsync(x => x.Id == id);
 
-        
+            return user;
+        }
+
+        public async Task<User> GetUserByEmailAsync(string email)
+        {
+            var user = await _appDbContext.Users.FirstOrDefaultAsync(x => x.Email == email);
             return user;
         }
 

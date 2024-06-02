@@ -10,6 +10,7 @@ namespace etiqaAPI.Controllers
    
     [ApiController]
     [Route("api/[controller]")]
+  
     public class UserController : Controller
     {
         private readonly IUserRepository _userRepository;

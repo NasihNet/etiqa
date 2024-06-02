@@ -1,14 +1,14 @@
-
-import { ShoppingCart } from 'react-feather';
-import { Badge } from "@/components/ui/badge";
-import { useSelector } from 'react-redux';
 import { Toaster, toast } from 'sonner'
+import { useAppSelector , AppDispatch} from '@/redux/store';
+import { UseDispatch, useDispatch } from 'react-redux';
+import { signout } from '@/redux/slices/auth-slice';
 
 
 
 
-function Navbar() {
-  const counter = useSelector((state: any) => state.counter.value);
+const Navbar =()  =>{
+  const isLoggedIn = useAppSelector((state) => state.auth.value.isLoggedIn);
+  const dispatch = useDispatch<AppDispatch>();
   return (
     <header>
       
@@ -22,16 +22,20 @@ function Navbar() {
 
           {/* Navigation Links */}
           <nav className="flex items-center">
-            <a href="#" className="text-gray-600 hover:text-gray-800 px-3 py-2">Home</a>
-            <a href="#" className="text-gray-600 hover:text-gray-800 px-3 py-2">About</a>
-            <a href="#" className="text-gray-600 hover:text-gray-800 px-3 py-2">Services</a>
-            <a href="#" className="text-gray-600 hover:text-gray-800 px-3 py-2">Contact</a>
-            
-            {/* Cart Icon */}
-            <div className="flex items-center gap-3 shrink-0 ml-auto">
-              {/* <ShoppingCart className="text-gray-600 hover:text-gray-800 w-6 h-6" />
-              <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">{counter}</Badge> */}
-            </div>
+            {isLoggedIn
+             ? 
+             <div> 
+             <a href="#" className="text-gray-600 hover:text-gray-800 px-3 py-2">Home</a>
+             <a href="#" className="text-gray-600 hover:text-gray-800 px-3 py-2">About</a>
+             <a href="#" className="text-gray-600 hover:text-gray-800 px-3 py-2">Services</a>
+             <button onClick={() => { dispatch(signout()) }} className="text-gray-600 hover:text-gray-800 px-3 py-2">Logout</button>
+                      
+           </div>
+            :<>
+              
+            </>}
+           
+           
           </nav>
         </div>
       </div>

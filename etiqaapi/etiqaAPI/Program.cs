@@ -35,7 +35,7 @@ namespace etiqaAPI
 
             builder.Services.AddCors(options =>
             {
-                options.AddPolicy("ExpensesPolicy",
+                options.AddPolicy("UsersPolicy",
                     builder =>
                     {
                         builder.WithOrigins("*")
@@ -71,11 +71,12 @@ namespace etiqaAPI
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-            app.UseCors("ExpensesPolicy");
+            app.UseCors("UsersPolicy");
             app.UseHttpsRedirection();
 
+          
             app.UseAuthorization();
-
+        
 
             app.MapControllers();
 

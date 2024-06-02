@@ -8,7 +8,7 @@ import { UseSelector, TypedUseSelectorHook, useSelector } from 'react-redux';
 
 export const store = configureStore({
   reducer: {
-     authReducer,
+     auth : authReducer,
      user : userReducer,
 },
 middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(ToastMiddleware)

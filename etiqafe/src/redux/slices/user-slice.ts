@@ -38,7 +38,7 @@ export const userSlice = createSlice({
             return { ...state, Users: [...users] };
         },
         deleteUser: (state, action: PayloadAction<number>) => {
-            debugger
+        
             state.Users = state.Users.filter(user => user.id !== action.payload);
         }
     }

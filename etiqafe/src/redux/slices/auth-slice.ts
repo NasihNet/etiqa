@@ -11,13 +11,14 @@ type InitialState = {
 type AuthState = {
     token: string;
     username : string;
+    isLoggedIn: boolean
 
 }
 const initialState = {
     value :{
-        token: "",
-        username: "",
-        isLoggedIn:""
+        token: " ",
+        username: " ",
+        isLoggedIn: false
     } as AuthState
 } as InitialState
 
@@ -26,7 +27,9 @@ export const authenticationSlice = createSlice({
     initialState,
     reducers: {
         userAuthenticated: (state, action : PayloadAction<any>) => {
+            debugger;
             sessionStorage.setItem('token', action.payload.token);
+            localStorage.setItem("token", action.payload.token);
             return {
               value :{
                 token : action.payload.token,
@@ -35,8 +38,9 @@ export const authenticationSlice = createSlice({
               }
             }
         },
-        signout: () => {
+        signout: (state) => {
             sessionStorage.clear();
+            state.value.isLoggedIn = false;
         }
     }
 });

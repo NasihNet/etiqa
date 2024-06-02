@@ -1,10 +1,19 @@
-import axios from "axios";
+import axios, { InternalAxiosRequestConfig } from "axios";
 import { UserProfileToken } from "../Model/User";
 import { userAuthenticated } from '@/redux/slices/auth-slice';
 import { AppDispatch } from '@/redux/store'; // Ensure this import is correct
 
 
+
 const api = "https://localhost:7254/api/";
+const axiosInstance = axios.create({    
+    baseURL: `${process.env.NEXT_APP_BASE_URL}/api/User`,
+})
+
+axiosInstance.interceptors.request.use((config : InternalAxiosRequestConfig) => {
+    config.headers['Authorization'] = 'Bearer ' + sessionStorage.getItem('token');
+    return config;
+});
 
 export const registerAPI = async (
     email: string,
@@ -14,7 +23,7 @@ export const registerAPI = async (
     skillSets : string,
     passwordhash: string,
     confirmpasswordhash: string,
-    dispatch: AppDispatch // Correct function signature
+    dispatch: AppDispatch 
 ) => {
     try {
         const { data } = await axios.post<UserProfileToken>(api + "authentication/signup/", {
@@ -28,36 +37,48 @@ export const registerAPI = async (
         });
         dispatch(userAuthenticated(data));
 
-        return data;
-    } catch (error) {
-        // Handle error
-        console.error(error);
+        return null; // No error
+
+    } catch (error : any) {
+      
+      // Check if error is an AxiosError and if it has a response
+      if (axios.isAxiosError(error) && error.response) {
+        return error.response.data.message; // Return the error message from the response
+      }
+      return "An unexpected error occurred"; // Fallback error message
     }
 };
 
 
 export const signinAPI = async (
-  email: string,
-  passwordhash: string,
-  dispatch: AppDispatch, // Correct function signature
-  onSuccess: () => void // Add onSuccess callback function
-) => {
-  try {
+    email: string,
+    passwordhash: string,
+    dispatch: AppDispatch,
+   
+  ): Promise<string | null> => {
+    try {
       const { data } = await axios.post<UserProfileToken>(api + "authentication/signin/", {
-          email: email,       
-          passwordHash: passwordhash,       
+        email: email,
+        passwordHash: passwordhash,
       });
-      console.log();
+        debugger
+      if (data.token != null) {
+        dispatch(userAuthenticated(data));    
+        return null; // No error
+      }
+      return "Invalid credentials"; // Fallback error message
+    } catch (error : any) {
       
-      if(data.token != null )
-        {
-            onSuccess();
-        }
-      dispatch(userAuthenticated(data));
-      return data;
-  } catch (error) {
-      // Handle error
-      console.error(error);
-  }
-};
+      // Check if error is an AxiosError and if it has a response
+      if (axios.isAxiosError(error) && error.response) {
+        return error.response.data.message; // Return the error message from the response
+      }
+      if (error.response?.data?.includes('Invalid username and password')) {
+      
+        throw error;
+      }
+   
+      throw error // Fallback error message
+    }
+  };
 

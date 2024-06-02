@@ -7,6 +7,8 @@ namespace etiqa.Domain.Abstraction.Repositories
     {
         Task<User> GetUserAsync(int id);
 
+        Task<User> GetUserByEmailAsync(string email);
+
         Task<ICollection<User>> GetUsersAsync();
 
         Task<User> CreateUserAsync(User user);

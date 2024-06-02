@@ -35,7 +35,6 @@ async function getProducts(): Promise<User[]> {
   try {
     const response = await axios.get<User[]>('https://localhost:7254/api/User');
     console.log(response.data);
-    debugger;
     return response.data;
   } catch (error) {
     console.error('Error fetching products:', error);

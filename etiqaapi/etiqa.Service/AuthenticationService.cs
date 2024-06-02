@@ -1,5 +1,6 @@
 ﻿using etiqa.Dal;
 using etiqa.Domain.Abstraction.Services;
+using etiqa.Domain.CustomException;
 using etiqa.Domain.Model;
 using etiqa.Service.Utilities;
 using Microsoft.AspNet.Identity;
@@ -22,53 +23,75 @@ namespace etiqa.Service
 
         public async Task<AuthenticatedUser> SignUp(User user)
         {
-            var checkUser = await _dataContext.Users.FirstOrDefaultAsync(u => u.Email == user.Email);
-            
-            if (checkUser is not null)
+            try
             {
-                return null;
+                var checkUser = await _dataContext.Users.FirstOrDefaultAsync(u => u.Email == user.Email);
+
+                if (checkUser is not null)
+                {
+                    throw new EmailAlreadyExist("Email already exists");
+                }
+
+                if (!string.IsNullOrEmpty(user.PasswordHash))
+                {
+                    user.PasswordHash = _passwordHasher.HashPassword(user.PasswordHash);
+                }
+
+                var role = await _dataContext.Roles.FirstOrDefaultAsync(x => x.Id == 2);
+
+                var userrole = new UserRole()
+                {
+                    User = user,
+                    Role = role
+
+                };
+
+                _dataContext.UserRoles.Add(userrole);
+
+                await _dataContext.Users.AddAsync(user);
+                await _dataContext.SaveChangesAsync();
+
+                return new AuthenticatedUser
+                {
+
+                    UserName = checkUser.UserName,
+                    Token = JwtGenerator.GenerateUserToken(user.UserName)
+
+                };
+
             }
-
-            user.PasswordHash = _passwordHasher.HashPassword(user.PasswordHash);
-            var role = await _dataContext.Roles.FirstOrDefaultAsync(x => x.Id == 2);
-
-            var userrole = new UserRole()
-            {
-                User = user,
-                Role = role
-
-            };
-
-            _dataContext.UserRoles.Add(userrole);
-
-            await _dataContext.Users.AddAsync(user);
-            await _dataContext.SaveChangesAsync();
-
-            return new AuthenticatedUser
+            catch (Exception ex)
             {
 
-                UserName = user.UserName,
-                Token = JwtGenerator.GenerateUserToken(user.UserName)
-
-            };
-
+                throw ex;
+            }
+          
         }
 
 
         public async Task<AuthenticatedUser> SignIn(User user)
         {
-            var dbUser = await _dataContext.Users.FirstOrDefaultAsync(x => x.UserName == user.UserName);
-
-            if (dbUser is null || _passwordHasher.VerifyHashedPassword(dbUser.PasswordHash, user.PasswordHash) == PasswordVerificationResult.Failed)
+            try
             {
-               // throw new InvalidUsernamePasswordException("Invalid username and password");
+                var dbUser = await _dataContext.Users.FirstOrDefaultAsync(x => x.Email == user.Email);
+
+                if (dbUser is null || _passwordHasher.VerifyHashedPassword(dbUser.PasswordHash, user.PasswordHash) == PasswordVerificationResult.Failed)
+                {
+                    throw new InvalidCredentialsException("Invalid username and password");
+                }
+
+                return new AuthenticatedUser
+                {
+                    UserName = dbUser.UserName,
+                    Token = JwtGenerator.GenerateUserToken(dbUser.UserName)
+                };
             }
-
-            return new AuthenticatedUser
+            catch (Exception e)
             {
-                UserName = user.UserName,
-                Token = JwtGenerator.GenerateUserToken(user.UserName)
-            };
+
+                throw e;
+            }
+         
         }
     }
 }

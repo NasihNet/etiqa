@@ -2,8 +2,8 @@
 using AutoMapper;
 using etiqa.Domain.Abstraction.Repositories;
 using etiqa.Domain.Abstraction.Services;
+using etiqa.Domain.CustomException;
 using etiqa.Domain.Model;
-using etiqa.Service;
 using etiqaAPI.Dto.AuthenticationDto;
 using etiqaAPI.Dto.UserDto;
 using Microsoft.AspNetCore.Mvc;
@@ -12,7 +12,7 @@ namespace etiqaAPI.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class AuthenticationController : Controller
+   public class AuthenticationController : Controller
     {
         private readonly IAuthenticationService _authenticationService;
         private readonly IUserRepository _userRepository;
@@ -27,50 +27,51 @@ namespace etiqaAPI.Controllers
         [HttpPost("signup")]
         public async Task<IActionResult> SignUp([FromBody]CreateUserDto userdto)
         {
-            if (userdto == null)
-                return BadRequest(ModelState);
-
-          
-                
-            var user = _mapper.Map<User>(userdto);
-           
-            var result = await _authenticationService.SignUp(user);
-
-            if (result is null)
+            try
             {
-                return StatusCode(422, ModelState);
+                
+                var user = _mapper.Map<User>(userdto);
+
+                var result = await _authenticationService.SignUp(user);
+
+              
+                return Created("", result);
             }
-            return Created("", result);
-            //try
-            //{
-
-            //    var result = await _authenticationService.SignUp(user);
-            //    return Created("", result);
-            //}
-            //catch (UsernameAlreadyExistException e)
-            //{
-
-            //    return StatusCode(409, e.Message);
-            //}
+            catch (EmailAlreadyExist e)
+            {
+                return NotFound(e.Message);
+             
+            }
+         
+          
 
         }
 
         [HttpPost("signin")]
         public async Task<IActionResult> SignIn([FromBody]SignInDto userdto)
         {
-            var user = _mapper.Map<User>(userdto);
-            var result = await _authenticationService.SignIn(user);
-            return Ok(result);
-            //try
-            //{
-            //    var result = await _userServices.SignIn(user);
-            //    return Ok(result);
-            //}
-            //catch (UsernameAlreadyExistException e)
-            //{
+            try
+            {
+                var checkUser = await _userRepository.GetUserByEmailAsync(userdto.Email);
 
-            //    return StatusCode(409, e.Message);
-            //}
+                var user = _mapper.Map<User>(userdto);
+                var result = await _authenticationService.SignIn(user);
+                return Ok(result);
+            }
+            catch (InvalidCredentialsException e)
+            {
+                return Unauthorized(e.Message);
+               
+
+            }catch (Exception e)
+            {
+
+                throw;
+            }
+
+          
+          
+         
         }
     }
 }
