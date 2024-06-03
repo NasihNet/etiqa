@@ -17,11 +17,16 @@ namespace etiqaAPI.Controllers
         private readonly IAuthenticationService _authenticationService;
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
-        public AuthenticationController(IAuthenticationService authenticationService, IMapper mapper, IUserRepository userRepository)
+        private readonly ILogger<AuthenticationController> _logger;
+        public AuthenticationController(IAuthenticationService authenticationService,
+            IMapper mapper,
+            IUserRepository userRepository,
+            ILogger<AuthenticationController> logger)
         {
             _authenticationService = authenticationService;
             _mapper = mapper;
             _userRepository = userRepository;
+            _logger = logger;
         }
 
         [HttpPost("signup")]
@@ -33,7 +38,7 @@ namespace etiqaAPI.Controllers
                 var user = _mapper.Map<User>(userdto);
 
                 var result = await _authenticationService.SignUp(user);
-
+                _logger.LogInformation("");
               
                 return Created("", result);
             }
