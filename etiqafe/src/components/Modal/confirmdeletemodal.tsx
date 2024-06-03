@@ -15,7 +15,7 @@ interface DeleteUserFormProps {
 
 
 
-  const confirmdeletemodal: React.FC<DeleteUserFormProps> = ({ user, onClose }) => {
+  const ConfirmDeleteModal: React.FC<DeleteUserFormProps> = ({ user, onClose }) => {
     const dispatch = useDispatch<AppDispatch>();
     const handleDeleteUser = async () => {
 
@@ -42,5 +42,5 @@ interface DeleteUserFormProps {
   )
 }
 
-export default confirmdeletemodal
+export default ConfirmDeleteModal
     
