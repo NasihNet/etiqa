@@ -67,20 +67,23 @@ namespace etiqa.Dal.Repositories
 
         public async Task<User> GetUserAsync(int id)
         {
-           var user = await _appDbContext.Users.FirstOrDefaultAsync(x => x.Id == id);
+            _logger.LogInformation("GetUserAsync called with id: {id}", id);
+            var user = await _appDbContext.Users.FirstOrDefaultAsync(x => x.Id == id);
 
             return user;
         }
 
         public async Task<User> GetUserByEmailAsync(string email)
         {
+            _logger.LogInformation("GetUserAsync called with id: {email}", email);
             var user = await _appDbContext.Users.FirstOrDefaultAsync(x => x.Email == email);
             return user;
         }
 
         public async Task<ICollection<User>> GetUsersAsync(int pageNumber, int pageSize)
         {
-            return await _appDbContext.Users.ToListAsync();
+            _logger.LogInformation("GetUsersAsync called with pageNumber: {pageNumber}, pageSize: {pageSize}", pageNumber, pageSize);
+            return await _appDbContext.Users.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
         }
 
       

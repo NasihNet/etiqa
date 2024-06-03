@@ -62,7 +62,7 @@ export function TrashIcon(props: any) {
 const UserList = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [pageNumber, setPageNumber] = useState<number>(1);
-  const [pageSize] = useState<number>(10);
+  const [pageSize] = useState<number>(100);
   const [hasMore, setHasMore] = useState<boolean>(true);
   const observer = useRef<IntersectionObserver | null>(null);
   const dispatch = useDispatch<AppDispatch>();
@@ -84,6 +84,9 @@ const UserList = () => {
   const fetchData = async () => {
     try {
       const data = await getUsers(dispatch, pageNumber, pageSize);
+      if (data.length < pageSize) {
+        setHasMore(false);
+      }
       setLoading(false);
     } catch (error) {
       console.error('Error fetching users:', error);

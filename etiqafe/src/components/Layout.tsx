@@ -11,7 +11,7 @@ const Layout: React.FC<any> = ({ children }) => {
   const router = useRouter();
   useEffect(() => {
     if (!isLoggedIn) {
-      router.push("/auth/SignIn"); // Redirect to login page if not authenticated
+     // router.push("/auth/SignIn"); // Redirect to login page if not authenticated
     }
   }, [isLoggedIn, router]);
 
