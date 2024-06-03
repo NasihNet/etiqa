@@ -31,7 +31,7 @@ const validation = Yup.object().shape({
   confirmpassword : Yup.string().required("Confirm Password is required")
 });
 
-const Signup = () => {
+const SignUp = () => {
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
   const [errorMessage,setErrorMessage] = useState<string | null>(null);
@@ -219,4 +219,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default SignUp;
