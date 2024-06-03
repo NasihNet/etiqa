@@ -17,10 +17,12 @@ axiosInstance.interceptors.request.use((config : InternalAxiosRequestConfig) => 
 
 
 export const getUsers = async (
-    dispatch: AppDispatch // Correct function signature
+    dispatch: AppDispatch,
+    pageNumber: number,
+    pageSize: number 
 ) => {
     try {
-        const { data } = await axiosInstance.get<User[]>("");     
+        const { data } = await axiosInstance.get<User[]>(`?pageNumber=${pageNumber}&pageSize=${pageSize}`);     
         dispatch(setUsers(data));    
         return data;
 

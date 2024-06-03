@@ -18,6 +18,7 @@ namespace etiqaAPI.Controllers
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
         private readonly ILogger<AuthenticationController> _logger;
+
         public AuthenticationController(IAuthenticationService authenticationService,
             IMapper mapper,
             IUserRepository userRepository,
@@ -47,9 +48,7 @@ namespace etiqaAPI.Controllers
                 return NotFound(e.Message);
              
             }
-         
-          
-
+        
         }
 
         [HttpPost("signin")]
