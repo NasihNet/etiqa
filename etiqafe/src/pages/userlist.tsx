@@ -15,7 +15,7 @@ import EditUserForm from './edituserform';
 import { User } from "@/Model/User";
 import ConfirmDeleteModal from "@/components/Modal/confirmdeletemodal";
 import { FaEdit } from "react-icons/fa";
-
+import { useRouter } from "next/router";
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 export function PlusIcon(props: any) {
@@ -60,6 +60,8 @@ export function TrashIcon(props: any) {
 }
 
 const UserList = () => {
+  const isLoggedIn = useAppSelector((state) => state.auth.value.isLoggedIn);
+ 
   const [loading, setLoading] = useState<boolean>(true);
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [pageSize] = useState<number>(100);
@@ -92,11 +94,14 @@ const UserList = () => {
       console.error('Error fetching users:', error);
     }
   };
-
+  const router = useRouter();
   useEffect(() => {
    
+      if (!isLoggedIn) {
+      router.replace("/auth/signin"); // Redirect to login page if not authenticated
+    }
     fetchData();
-  }, [dispatch]);
+  }, [dispatch,isLoggedIn]);
 
   const handleLoadMore = () => {
     setPageNumber(prevPageNumber => prevPageNumber + 1);

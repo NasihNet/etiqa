@@ -9,11 +9,11 @@ import { useEffect } from "react";
 const Layout: React.FC<any> = ({ children }) => {
   const isLoggedIn = useAppSelector((state) => state.auth.value.isLoggedIn);
   const router = useRouter();
-  useEffect(() => {
-    if (!isLoggedIn) {
-     // router.push("/auth/SignIn"); // Redirect to login page if not authenticated
-    }
-  }, [isLoggedIn, router]);
+  // useEffect(() => {
+  //   if (!isLoggedIn) {
+  //     router.replace("/auth/signin"); // Redirect to login page if not authenticated
+  //   }
+  // }, [isLoggedIn, router]);
 
     return (
       <div className="content">                   

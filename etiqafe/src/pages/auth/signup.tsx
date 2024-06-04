@@ -47,7 +47,7 @@ const SignUp = () => {
       setErrorMessage(result);
     }else{
 
-      router.push('/userlist')
+      router.replace('/userlist')
     }
   };
 
@@ -132,7 +132,7 @@ const SignUp = () => {
       </form>
       <div className="mt-6 text-center text-sm text-gray-500 dark:text-gray-400">
         Already have an account?{" "}
-        <Link href="/auth/SignIn" className="font-medium text-gray-900 hover:underline dark:text-gray-50" prefetch={false}>
+        <Link href="/auth/signin" className="font-medium text-gray-900 hover:underline dark:text-gray-50" prefetch={false}>
           Sign In
         </Link>
       </div>

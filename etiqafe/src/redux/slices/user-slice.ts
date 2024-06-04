@@ -25,6 +25,7 @@ export const userSlice = createSlice({
         setUsers: (state, action) => {
             //sessionStorage.setItem('token', action.payload.token);                    
             state.Users = action.payload;
+            //state.Users = [...state.Users, ...action.payload];
             
         },
         editUser: (state, action: PayloadAction<User>) => {
