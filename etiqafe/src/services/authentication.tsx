@@ -2,6 +2,7 @@ import axios, { InternalAxiosRequestConfig } from "axios";
 import { UserProfileToken } from "../Model/User";
 import { userAuthenticated } from '@/redux/slices/auth-slice';
 import { AppDispatch } from '@/redux/store'; // Ensure this import is correct
+import { toast } from "sonner";
 
 
 
@@ -61,17 +62,17 @@ export const signinAPI = async (
         email: email,
         passwordHash: passwordhash,
       });
-        debugger
-      if (data.token != null) {
+       
+     
         dispatch(userAuthenticated(data));    
-        return null; // No error
-      }
-      return "Invalid credentials"; // Fallback error message
-    } catch (error : any) {
+        return data.userName; // No error
       
+     
+    } catch (error : any) {
+      debugger
       // Check if error is an AxiosError and if it has a response
       if (axios.isAxiosError(error) && error.response) {
-        return error.response.data.message; // Return the error message from the response
+        toast.error(error.response.data.message);  // Return the error message from the response
       }
       if (error.response?.data?.includes('Invalid username and password')) {
       

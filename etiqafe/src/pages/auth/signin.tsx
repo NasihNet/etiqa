@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Button } from "@/components/ui/button";
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
@@ -7,10 +7,9 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { signinAPI } from '@/services/authentication';
 import { useDispatch } from 'react-redux';
-import { AppDispatch } from '@/redux/store';
 import { useRouter } from 'next/router';
 import Link from "next/link"
-
+import { AppDispatch, useAppSelector } from '@/redux/store';
 type LoginFormsInputs = {
   email: string;
   passwordHash: string;
@@ -23,15 +22,28 @@ const validation = Yup.object().shape({
 
 function SignIn() {
  // const { loginUser } = useAuth();
+ const isLoggedIn = useAppSelector((state) => state.auth.value.isLoggedIn);
  const dispatch = useDispatch<AppDispatch>();
  const router = useRouter(); // Initialize useRouter hook
+ useEffect(()=>{
+  if (isLoggedIn) {
+    router.replace("/userlist"); // Redirect to login page if not authenticated
+ }}
+)
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<LoginFormsInputs>({ resolver: yupResolver(validation) });
-  const handleLogin = (form: LoginFormsInputs) => {
-    signinAPI(form.email, form.passwordHash, dispatch , router.push('/userlist'));
+ 
+  const handleLogin = async (form: LoginFormsInputs) => {
+   const data = await signinAPI(form.email, form.passwordHash, dispatch);
+   debugger
+   if(typeof data == 'string')
+    {
+     
+      router.replace('/auth/signin');
+    }
   };
 
   return (
