@@ -61,6 +61,9 @@ export function TrashIcon(props: any) {
 
 const UserList = () => {
   const [loading, setLoading] = useState<boolean>(true);
+  const [pageNumber, setPageNumber] = useState<number>(1);
+  const [pageSize] = useState<number>(100);
+  const [hasMore, setHasMore] = useState<boolean>(true);
   const observer = useRef<IntersectionObserver | null>(null);
   const dispatch = useDispatch<AppDispatch>();
   const userData = useAppSelector((state) => state.user.Users);
@@ -78,18 +81,26 @@ const UserList = () => {
     setIsDeleteUser(true);
   }
 
-  useEffect(() => {
-    const fetchData = () => {
-      try {
-        getUsers(dispatch);
-        setLoading(false);
-      } catch (error) {
-        console.error('Error fetching users:', error);
+  const fetchData = async () => {
+    try {
+      const data = await getUsers(dispatch, pageNumber, pageSize);
+      if (data.length < pageSize) {
+        setHasMore(false);
       }
-    };
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching users:', error);
+    }
+  };
 
+  useEffect(() => {
+   
     fetchData();
   }, [dispatch]);
+
+  const handleLoadMore = () => {
+    setPageNumber(prevPageNumber => prevPageNumber + 1);
+  };
 
   return (
     <main>
@@ -156,6 +167,9 @@ const UserList = () => {
             </div>
           </div>
           <div id="bottom-sentinel" style={{ height: '10px' }}></div>
+          {hasMore && (
+            <Button onClick={handleLoadMore} className="mt-4">Load More</Button>
+          )}
         </>
       )}
 

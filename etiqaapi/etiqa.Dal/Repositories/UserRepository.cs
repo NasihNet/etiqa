@@ -2,26 +2,31 @@
 using etiqa.Domain.Abstraction.Repositories;
 using etiqa.Domain.Model;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.Extensions.Logging;
 
 namespace etiqa.Dal.Repositories
 {
     public class UserRepository : IUserRepository
     {   private readonly DataContext _appDbContext;
-        public UserRepository(DataContext appDbContext)
+        private readonly ILogger<UserRepository> _logger;
+
+        public UserRepository(DataContext appDbContext, ILogger<UserRepository>logger)
         {
             _appDbContext = appDbContext;
+            _logger = logger;
         }
 
         public async Task<User> CreateUserAsync(User user)
         {
-             _appDbContext.Users.Add(user);
+            _logger.LogInformation("CreateUserAsync called with user: {user}", user);
+            _appDbContext.Users.Add(user);
              await _appDbContext.SaveChangesAsync();
              return user;
         }
 
         public async Task<User> DeleteUserAsync(int userId)
         {
+            _logger.LogInformation("DeleteUserAsync called with userId: {userId}", userId);
             var user = _appDbContext.Users.FirstOrDefault(x => x.Id == userId);
         
             _appDbContext.Users.Remove(user);
@@ -33,6 +38,7 @@ namespace etiqa.Dal.Repositories
         {
             try
             {
+                _logger.LogInformation("EditUserAsync called with user: {user}", user);
                 var result =  _appDbContext.Users.Include(x => x.UserRoles).Where(x => x.Id == user.Id).FirstOrDefault();
 
                 if (result == null)
@@ -53,8 +59,7 @@ namespace etiqa.Dal.Repositories
             }
             catch (Exception e)
             {
-                // Log the exception details
-                Console.WriteLine($"Error in EditUserAsync: {e.Message}");
+                _logger.LogError(e, "Error in EditUserAsync: {message}", e.Message);
                 Console.WriteLine(e.StackTrace);
                 throw; // Rethrow the exception to be handled by the calling method
             }
@@ -62,20 +67,23 @@ namespace etiqa.Dal.Repositories
 
         public async Task<User> GetUserAsync(int id)
         {
-           var user = await _appDbContext.Users.FirstOrDefaultAsync(x => x.Id == id);
+            _logger.LogInformation("GetUserAsync called with id: {id}", id);
+            var user = await _appDbContext.Users.FirstOrDefaultAsync(x => x.Id == id);
 
             return user;
         }
 
         public async Task<User> GetUserByEmailAsync(string email)
         {
+            _logger.LogInformation("GetUserAsync called with id: {email}", email);
             var user = await _appDbContext.Users.FirstOrDefaultAsync(x => x.Email == email);
             return user;
         }
 
-        public async Task<ICollection<User>> GetUsersAsync()
+        public async Task<ICollection<User>> GetUsersAsync(int pageNumber, int pageSize)
         {
-            return await _appDbContext.Users.ToListAsync();
+            _logger.LogInformation("GetUsersAsync called with pageNumber: {pageNumber}, pageSize: {pageSize}", pageNumber, pageSize);
+            return await _appDbContext.Users.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
         }
 
       

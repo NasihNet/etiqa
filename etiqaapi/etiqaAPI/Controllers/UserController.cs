@@ -38,10 +38,10 @@ namespace etiqaAPI.Controllers
 
        
         [HttpGet]
-        public async Task<IActionResult> GetUsersAsync()
+        public async Task<IActionResult> GetUsersAsync(int pageNumber, int pageSize)
         {
        
-           var user = await _userRepository.GetUsersAsync();
+           var user = await _userRepository.GetUsersAsync(pageNumber, pageSize);
            var userDto = _mapper.Map<List<GetUserDto>>(user);
            return Ok(userDto);
         

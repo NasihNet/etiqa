@@ -8,7 +8,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { signinAPI } from '@/services/authentication';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/redux/store';
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/router';
+import Link from "next/link"
 
 type LoginFormsInputs = {
   email: string;
@@ -87,6 +88,12 @@ function SignIn() {
       </Button>
     </div>
     </form>
+    <div className="mt-6 text-center text-sm text-gray-500 dark:text-gray-400">
+        Dont have account?{" "}
+        <Link href="/auth/signup" className="font-medium text-gray-900 hover:underline dark:text-gray-50" prefetch={false}>
+          Sign Up
+        </Link>
+      </div>     
   </div>
   )
 }
