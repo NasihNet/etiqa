@@ -54,7 +54,7 @@ namespace etiqa.Service
                 return new AuthenticatedUser
                 {
 
-                    UserName = checkUser.UserName,
+                    UserName = user.UserName,
                     Token = JwtGenerator.GenerateUserToken(user.UserName)
 
                 };

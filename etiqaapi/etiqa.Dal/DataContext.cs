@@ -26,8 +26,7 @@ namespace etiqa.Dal
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(
-                @"Server=(localdb)\mssqllocaldb;Database=EtiqaDb;Trusted_Connection=True");
+           
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

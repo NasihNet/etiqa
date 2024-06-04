@@ -38,7 +38,7 @@ export const registerAPI = async (
         });
         dispatch(userAuthenticated(data));
 
-        return null; // No error
+        return data.userName; // No error
 
     } catch (error : any) {
       
@@ -72,11 +72,11 @@ export const signinAPI = async (
       debugger
       // Check if error is an AxiosError and if it has a response
       if (axios.isAxiosError(error) && error.response) {
-        toast.error(error.response.data.message);  // Return the error message from the response
+        toast.error(error.response.data);  // Return the error message from the response
       }
       if (error.response?.data?.includes('Invalid username and password')) {
-      
-        throw error;
+        toast.error('Invalid username and password');  // Return the error message from the response
+        
       }
    
       throw error // Fallback error message
